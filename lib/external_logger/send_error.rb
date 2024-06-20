@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'external_logger/base'
-require 'appsignal'
 
 class ExternalLogger::SendError < ExternalLogger::Base
   class UnknowErrorType < StandardError
@@ -29,10 +28,18 @@ class ExternalLogger::SendError < ExternalLogger::Base
 
   class << self
     def call(error, params = {}, &block)
+      self::ADDITIONAL_LOGGERS.each do |name, active|
+        send("send_error_to_#{name.to_s}", error, params) if active
+      end
+
       send("send_error_to_#{self::CURRENT_LOGGER}", error, params, &block)
     end
 
     private
+
+    def send_error_to_rollbar(error, params)
+      Rollbar.error(error, params)
+    end
 
     def send_error_to_appsignal(error, params = {}, &block)
       case error
