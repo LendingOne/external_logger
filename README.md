@@ -1,15 +1,14 @@
 # ExternalLogger
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/external_logger`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Small adapter for an external logger. Made for how L1 team is used to using a logger
+- Currently using Appsignal
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'external_logger'
+gem 'external_logger', git: 'https://github.com/LendingOne/external_logger.git'
 ```
 
 And then execute:
@@ -21,15 +20,29 @@ Or install it yourself as:
     $ gem install external_logger
 
 ## Usage
+Create a config/appsignal.yml file
+- [Example configuration](https://docs.appsignal.com/ruby/configuration.html#example-configuration-file)
 
-TODO: Write usage instructions here
+Open console and check if `Appsignal.active?`
+- should return `true`
+
+If return is `false`
+- check `appsignal.log` for error messages
+
+### Errors
+Use `ExternalLogger::SendError.call` to send an error
+- Accepts String, Exception, Hash
+
+It also accepts a block if exception is passed
+- Read more about it [here](https://github.com/appsignal/appsignal-ruby?tab=readme-ov-file#usage)
+
+
+### Warning
+Use `ExternalLogger::SendWarning.warn` to send a warning
+- Accepts String
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/external_logger.

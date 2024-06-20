@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "external_logger/version"
+require_relative 'external_logger/version'
+require 'external_logger/send_error'
+require 'external_logger/send_warning'
 
 module ExternalLogger
-  class Error < StandardError; end
-  # Your code goes here...
 end
