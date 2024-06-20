@@ -38,7 +38,8 @@ It also accepts a block if exception is passed
 
 
 ### Warning
-Use `ExternalLogger::SendWarning.warn` to send a warning
+Use `ExternalLogger::SendLog.warn` to send a log
+- same methods as Rails logger `fatal, error, warn, info, debug`
 - Accepts String
 
 ## Development

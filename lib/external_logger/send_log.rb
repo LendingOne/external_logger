@@ -11,7 +11,7 @@ class ExternalLogger::SendLog < ExternalLogger::Base
 
     def warn(message)
       self::ADDITIONAL_LOGGERS.each do |name, active|
-        send("warning_sender_for_#{name.to_s}", message) if active
+        send("warning_sender_for_#{name}", message) if active
       end
 
       logger.warn(message)

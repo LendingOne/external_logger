@@ -29,7 +29,7 @@ class ExternalLogger::SendError < ExternalLogger::Base
   class << self
     def call(error, params = {}, &block)
       self::ADDITIONAL_LOGGERS.each do |name, active|
-        send("send_error_to_#{name.to_s}", error, params) if active
+        send("send_error_to_#{name}", error, params) if active
       end
 
       send("send_error_to_#{self::CURRENT_LOGGER}", error, params, &block)
