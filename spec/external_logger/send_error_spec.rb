@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.shared_examples 'result is correct' do |underwritten_ncf|
+RSpec.shared_examples 'error is sent to Appsignal' do |underwritten_ncf|
   it do
     expect(Appsignal).to receive(:set_error)
     expect(result).to be_a(error_class)
@@ -26,12 +26,12 @@ RSpec.describe ExternalLogger::SendError do
           let(:error_class) { error.class }
           let(:error_message) { error.message }
 
-          include_examples 'result is correct'
+          include_examples 'error is sent to Appsignal'
 
           context 'when block is present' do
             let(:block) { proc{ transaction.set_tags(smth: :smth) } }
 
-            include_examples 'result is correct'
+            include_examples 'error is sent to Appsignal'
           end
         end
 
@@ -40,14 +40,14 @@ RSpec.describe ExternalLogger::SendError do
           let(:error_class) { described_class::AppsignalErrorWrapper }
           let(:error_message) { {} }
 
-          include_examples 'result is correct'
+          include_examples 'error is sent to Appsignal'
           it { expect(result.class.name).to eq(error) }
 
           context 'when params are present' do
             let(:params) { { once_again: :epic } }
             let(:error_message) { params }
 
-            include_examples 'result is correct'
+            include_examples 'error is sent to Appsignal'
             it { expect(result.class.name).to eq(error) }
           end
         end
@@ -70,6 +70,18 @@ RSpec.describe ExternalLogger::SendError do
             expect { result }.to raise_error(described_class::UnknowErrorType)
           end
         end
+      end
+    end
+
+    context 'when additional loggers are present' do
+      let(:error) { 'Not gooders' }
+      let(:params) { 'smth' }
+
+      it { expect(described_class::ADDITIONAL_LOGGERS).to eq({rollbar: true}) }
+
+      it 'send succesfully' do
+        expect(Rollbar).to receive(:error).with(error, params)
+        result
       end
     end
   end

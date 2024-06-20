@@ -3,6 +3,7 @@ PATH
   specs:
     external_logger (0.1.0)
       appsignal (~> 3.7.5)
+      rollbar
 
 GEM
   remote: https://rubygems.org/
@@ -24,6 +25,7 @@ GEM
     regexp_parser (2.9.2)
     rexml (3.3.0)
       strscan
+    rollbar (3.5.2)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -56,6 +58,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-23
 
 DEPENDENCIES
   external_logger!
